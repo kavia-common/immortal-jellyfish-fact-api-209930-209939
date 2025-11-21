@@ -3,6 +3,11 @@ import os
 
 from src.api.main import app
 
+"""
+Generate the OpenAPI schema and write it to interfaces/openapi.json.
+Run with: python -m src.api.generate_openapi (from repository root of this container)
+"""
+
 # Get the OpenAPI schema
 openapi_schema = app.openapi()
 
