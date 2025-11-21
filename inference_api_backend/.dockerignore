@@ -1,0 +1,35 @@
+# Python cache and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.env
+*.env
+
+# Tests and tooling caches
+tests/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Git and VCS
+.git/
+.gitignore
+.gitattributes
+
+# IDE/editor
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Local interfaces output can be copied selectively if needed
+interfaces/*.json
