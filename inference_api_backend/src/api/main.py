@@ -5,14 +5,15 @@ from src.api.routers import api_router
 from src.core.config import get_cors_settings
 from src.core.version import get_version
 
+
 # PUBLIC_INTERFACE
 def create_app() -> FastAPI:
     """Create and configure the FastAPI application with metadata, CORS, and routes."""
     app = FastAPI(
         title="Immortal Jellyfish Fact API",
         description=(
-            "An API that returns a curated fact about the 'immortal jellyfish' (Turritopsis dohrnii), "
-            "including supporting and refuting sources."
+            "An API that returns a curated fact about the 'immortal jellyfish' "
+            "(Turritopsis dohrnii), including supporting and refuting sources."
         ),
         version=get_version(),
         openapi_tags=[

@@ -1,0 +1,22 @@
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-q"
+testpaths = [
+  "tests",
+]
+pythonpath = [
+  "src"
+]
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = [
+  "E203",  # whitespace before ':', compatible with some formatters
+]
+exclude = [
+  ".venv",
+  "venv",
+  "__pycache__",
+  "interfaces",
+  "*/site-packages/*",
+]
