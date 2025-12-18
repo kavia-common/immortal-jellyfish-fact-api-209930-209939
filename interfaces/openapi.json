@@ -1,0 +1,253 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Immortal Jellyfish Inference API",
+    "description": "An API that returns a curated fact about the 'immortal jellyfish' (Turritopsis dohrnii) with links to supporting and refuting sources.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/v1/fact": {
+      "get": {
+        "tags": [
+          "facts"
+        ],
+        "summary": "Get curated fact about the 'immortal jellyfish'",
+        "description": "Returns a curated fact about Turritopsis dohrnii with supporting and refuting sources.",
+        "operationId": "get_fact_v1_fact_get",
+        "responses": {
+          "200": {
+            "description": "Fact payload returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FactResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sources": {
+      "get": {
+        "tags": [
+          "facts"
+        ],
+        "summary": "Get source links only",
+        "description": "Returns supporting and refuting sources as separate arrays.",
+        "operationId": "get_sources_v1_sources_get",
+        "responses": {
+          "200": {
+            "description": "Sources returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Get Sources V1 Sources Get"
+                },
+                "example": {
+                  "supports": [
+                    {
+                      "url": "https://www.nature.com/articles/news.2010.490",
+                      "title": "Secrets of the 'immortal' jellyfish",
+                      "stance": "support"
+                    }
+                  ],
+                  "refutes": [
+                    {
+                      "url": "https://www.nature.com/articles/news.2010.490",
+                      "title": "Secrets of the 'immortal' jellyfish",
+                      "stance": "support"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Health check",
+        "description": "Returns a simple health status for liveness checks.",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Service is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "API root",
+        "description": "Minimal root endpoint. Visit /docs for interactive Swagger UI.",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Root message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Root  Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FactResponse": {
+        "properties": {
+          "fact": {
+            "type": "string",
+            "title": "Fact",
+            "description": "A concise fact about Turritopsis dohrnii"
+          },
+          "claim": {
+            "type": "string",
+            "title": "Claim",
+            "description": "The central claim summarized for evaluation"
+          },
+          "supports": {
+            "items": {
+              "$ref": "#/components/schemas/SourceLink"
+            },
+            "type": "array",
+            "title": "Supports",
+            "description": "List of sources that support the claim"
+          },
+          "refutes": {
+            "items": {
+              "$ref": "#/components/schemas/SourceLink"
+            },
+            "type": "array",
+            "title": "Refutes",
+            "description": "List of sources that refute or nuance the claim"
+          },
+          "retrieved_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Retrieved At",
+            "description": "Timestamp when the fact and sources were compiled (UTC)"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version",
+            "description": "API/version of the fact payload"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fact",
+          "claim",
+          "version"
+        ],
+        "title": "FactResponse",
+        "description": "Response containing the immortal jellyfish fact, claim, and curated sources.",
+        "example": {
+          "claim": "The 'immortal jellyfish' can effectively avoid death by reverting to a younger life stage.",
+          "fact": "Turritopsis dohrnii can revert its adult medusa stage back to a juvenile polyp stage under stress, a process termed transdifferentiation.",
+          "refutes": [
+            {
+              "stance": "refute",
+              "title": "There\u2019s No Such Thing as an Immortal Jellyfish",
+              "url": "https://www.smithsonianmag.com/science-nature/there-no-such-thing-immortal-jellyfish-180974035/"
+            }
+          ],
+          "retrieved_at": "2025-01-01T00:00:00Z",
+          "supports": [
+            {
+              "stance": "support",
+              "title": "Transdifferentiation in Turritopsis spp.",
+              "url": "https://www.pnas.org/doi/10.1073/pnas.0701243104"
+            },
+            {
+              "stance": "support",
+              "title": "Secrets of the 'immortal' jellyfish",
+              "url": "https://www.nature.com/articles/news.2010.490"
+            }
+          ],
+          "version": "0.1.0"
+        }
+      },
+      "SourceLink": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Url",
+            "description": "HTTPS URL to the source article or paper"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "Human-readable title of the source"
+          },
+          "stance": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "support",
+                  "refute"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stance",
+            "description": "Whether this source supports or refutes the claim"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url",
+          "title"
+        ],
+        "title": "SourceLink",
+        "description": "A link to a source with optional stance annotation.",
+        "example": {
+          "stance": "support",
+          "title": "Secrets of the 'immortal' jellyfish",
+          "url": "https://www.nature.com/articles/news.2010.490"
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "facts",
+      "description": "Fact retrieval and source listing"
+    },
+    {
+      "name": "health",
+      "description": "Health and liveness endpoints"
+    }
+  ]
+}
