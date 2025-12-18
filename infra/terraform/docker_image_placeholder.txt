@@ -1,0 +1,17 @@
+Supply a built container image URI via the 'container_image' variable when planning/applying Terraform.
+
+Examples:
+- GCR: gcr.io/PROJECT/immortal-jellyfish-inference:TAG
+- Artifact Registry (recommended): REGION-docker.pkg.dev/PROJECT/REPOSITORY/immortal-jellyfish-inference:TAG
+
+This repository includes a Dockerfile at:
+inference_api_backend/Dockerfile
+
+Build & push (GCR example):
+  export PROJECT_ID="your-project-id"
+  gcloud auth configure-docker
+  docker build -t gcr.io/${PROJECT_ID}/immortal-jellyfish-inference:v1 ./inference_api_backend
+  docker push gcr.io/${PROJECT_ID}/immortal-jellyfish-inference:v1
+
+Then pass to Terraform:
+  terraform plan -var "project_id=${PROJECT_ID}" -var "container_image=gcr.io/${PROJECT_ID}/immortal-jellyfish-inference:v1"
